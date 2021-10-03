@@ -5,7 +5,6 @@ import zipfile
 
 def update_core(*args):
     installation_dir = os.getenv("APPDATA") + "\\TSR Console\\"
-    print(installation_dir)
 
     # TODO check if an update is available
 
