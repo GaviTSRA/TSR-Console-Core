@@ -1,6 +1,6 @@
 from os import name, system
 
-def cls(*args):
+def run(plugins, *args):
     if name == 'nt':
         _ = system('cls')
     else:

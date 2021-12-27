@@ -2,34 +2,38 @@ import shutil
 import os
 import urllib.request
 import zipfile
+import time
+from tsru import LoadingSpinner
 
-def update_core(*args):
-    installation_dir = os.getenv("APPDATA") + "\\TSR Console\\"
+def run(plugins, *args):
+    installation_dir = ".\\"
 
     # TODO check if an update is available
 
-    print("Starting core update...")
+    spinner = LoadingSpinner("Starting core update")
     if not os.path.exists(installation_dir + "update"): os.mkdir(installation_dir + "update")
+    spinner.stop()
 
-    print("Downloading updated core...")
-    urllib.request.urlretrieve("https://github.com/GaviTSRA/TSR-Console-Core/archive/refs/heads/master.zip", os.getenv("APPDATA") + "\\TSR Console\\update\\core.zip")
-    print("Done")  
+    spinner = LoadingSpinner("Downloading update")
+    urllib.request.urlretrieve("https://github.com/GaviTSRA/TSR-Console-Core/archive/refs/heads/master.zip", ".\\update\\core.zip")
+    spinner.stop()
 
-    print("Extracting...")
+    spinner = LoadingSpinner("Extracting update")
     with zipfile.ZipFile(installation_dir + "update\\core.zip", 'r') as zip_ref:
         zip_ref.extractall(installation_dir + "update\\core\\")
-    print("Done")
+    spinner.stop()
 
-    print("Removing old files...")
+    spinner = LoadingSpinner("Removing old files")
     shutil.rmtree(installation_dir + "Core")
-    print("Done")
+    spinner.stop()
 
-    print("Copying new files...")
+    spinner = LoadingSpinner("Copying new files")
     shutil.move(installation_dir + "update\\core\\TSR-Console-Core-master\\Core", installation_dir)
-    print("Done")
+    spinner.stop()
 
-    print("Cleaning up...")
+    spinner = LoadingSpinner("Cleaning up")
     shutil.rmtree(installation_dir + "update")
-    print("Done")
+    spinner.stop()
 
-    print("Update completed")
+    time.sleep(0.1)
+    print("Update completed, please restart tsrconsole")
